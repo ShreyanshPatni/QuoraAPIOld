@@ -1,7 +1,7 @@
 package com.upgrad.quora.service.entity;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +14,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 
 @Entity
 @Table(name = "answer")
@@ -42,16 +49,16 @@ public class AnswerEntity implements Serializable {
 
     @Column(name = "date")
     @NotNull
-    private ZonedDateTime date;
+    private LocalDateTime date;
 
     @ManyToOne
-    @OnDelete(action=OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
     @NotNull
     private UserEntity user;
 
     @ManyToOne
-    @OnDelete(action=OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "question_id")
     @NotNull
     private QuestionEntity question;
@@ -84,11 +91,11 @@ public class AnswerEntity implements Serializable {
     }
 
 
-    public ZonedDateTime getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(ZonedDateTime date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -108,6 +115,21 @@ public class AnswerEntity implements Serializable {
 
     public void setQuestion(QuestionEntity question) {
         this.question = question;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return new EqualsBuilder().append(this, obj).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(this).hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
 }
